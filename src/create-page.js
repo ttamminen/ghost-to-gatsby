@@ -15,6 +15,9 @@ const getImagePath = imageUrl => {
   return path.basename(parsed.pathname || '');
 };
 
+// based on https://gist.github.com/getify/3667624
+const escapeDoubleQuotes = str => str.replace(/\\([\s\S])|(")/g, '\\$1$2');
+
 const createPage = async (
   { date, slug, title, tags, image, markdown: rawMarkdown, draft, featured },
   outputDirectory,
@@ -98,7 +101,7 @@ const createPage = async (
   await writeFileAsync(
     markdownPath,
     `---
-title: "${title}"
+title: "${escapeDoubleQuotes(title)}"
 slug: "/${slug}"
 date: "${date.toISOString()}"${
       postImagePath
